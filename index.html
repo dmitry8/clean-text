@@ -14,7 +14,6 @@
     .container {
         display: flex;
         gap: 20px;
-        align-items: flex-start;
     }
     textarea {
         width: 400px;
@@ -25,11 +24,11 @@
         resize: none;
         font-size: 16px;
     }
-    .controls {
+    .buttons {
         display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 40px;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
     }
     button {
         padding: 12px 20px;
@@ -53,14 +52,14 @@
 <body>
 
 <div>
-<h1>Очистка текста от скрытых символовd</h1>
+<h1>Очистка текста от скрытых символов</h1>
 <div class="container">
     <textarea id="inputText" placeholder="Вставьте текст сюда..."></textarea>
     <textarea id="outputText" placeholder="Результат появится здесь..." readonly></textarea>
-    <div class="controls">
-        <button onclick="cleanText()">Очистить текст</button>
-        <button onclick="copyText()">Скопировать</button>
-    </div>
+</div>
+<div class="buttons">
+    <button onclick="cleanText()">Очистить текст</button>
+    <button onclick="copyText()">Скопировать</button>
 </div>
 </div>
 
@@ -82,4 +81,3 @@ function copyText() {
 
 </body>
 </html>
-
