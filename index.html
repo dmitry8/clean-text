@@ -4,28 +4,71 @@
 <meta charset="UTF-8">
 <title>Очистка текста</title>
 <style>
-    body { font-family: sans-serif; padding: 20px; }
-    textarea { width: 100%; height: 150px; margin-bottom: 10px; }
-    button { padding: 10px 20px; margin-right: 10px; }
+    body {
+        font-family: sans-serif;
+        padding: 30px;
+        background: #f0f2f5;
+        display: flex;
+        justify-content: center;
+    }
+    .container {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+    }
+    textarea {
+        width: 400px;
+        height: 200px;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        resize: none;
+        font-size: 16px;
+    }
+    .controls {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 40px;
+    }
+    button {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        background-color: #4CAF50;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
 </style>
 </head>
 <body>
 
+<div>
 <h1>Очистка текста от скрытых символов</h1>
-<textarea id="inputText" placeholder="Вставьте текст сюда..."></textarea>
-<br>
-<button onclick="cleanText()">Очистить текст</button>
-<button onclick="copyText()">Скопировать</button>
-<br><br>
-<textarea id="outputText" placeholder="Результат появится здесь..." readonly></textarea>
+<div class="container">
+    <textarea id="inputText" placeholder="Вставьте текст сюда..."></textarea>
+    <textarea id="outputText" placeholder="Результат появится здесь..." readonly></textarea>
+    <div class="controls">
+        <button onclick="cleanText()">Очистить текст</button>
+        <button onclick="copyText()">Скопировать</button>
+    </div>
+</div>
+</div>
 
 <script>
 function cleanText() {
     let text = document.getElementById("inputText").value;
-    // Заменяем неразрывные пробелы на обычные
-    text = text.replace(/\u00A0/g, ' ');
-    // Удаляем мягкий перенос
-    text = text.replace(/\u00AD/g, '');
+    text = text.replace(/\u00A0/g, ' ');  // заменяем неразрывные пробелы
+    text = text.replace(/\u00AD/g, '');   // удаляем мягкий перенос
     document.getElementById("outputText").value = text;
 }
 
