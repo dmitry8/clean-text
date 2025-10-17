@@ -192,11 +192,7 @@ body.dark .theme-toggle svg { color: #d0d0d2; }
 </head>
 <body>
 
-<button id="themeToggle" class="theme-toggle" title="Переключить тему">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25">
-        <path fill-rule="evenodd" d="M11.37 22.065c-3.284-.996-6.021-3.642-6.73-7.661-.725-4.111.935-7.54 3.697-9.58 2.74-2.023 6.543-2.668 10.119-1.349a1 1 0 0 1 .104 1.831l-.45-.893.45.893h.001l.002-.001-.003.001a7 7 0 0 0-.632.403c-.403.29-.93.731-1.427 1.33-.978 1.178-1.846 2.97-1.395 5.525.45 2.554 1.878 3.939 3.2 4.71.67.39 1.315.623 1.793.757a7 7 0 0 0 .73.161h.004-.003.003a1 1 0 0 1 .528 1.757c-2.918 2.47-6.726 3.105-9.99 2.116Zm7.018-2.52a10 10 0 0 1-1.09-.544c-1.72-1.003-3.59-2.842-4.162-6.09s.554-5.616 1.826-7.15c.282-.339.57-.637.848-.896-2.307-.308-4.568.3-6.285 1.568-2.178 1.609-3.503 4.292-2.915 7.624.568 3.224 2.725 5.3 5.34 6.094a8.65 8.65 0 0 0 6.438-.605Z" clip-rule="evenodd"></path>
-    </svg>
-</button>
+<button id="themeToggle" class="theme-toggle" title="Переключить тему"></button>
 
 <div class="wrapper">
     <h1>Очистка текста от скрытых символов</h1>
@@ -217,6 +213,9 @@ body.dark .theme-toggle svg { color: #d0d0d2; }
 <div class="footer-text">Сделал Дима, с ❤️ к Т—Ж</div>
 
 <script>
+const moonSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" viewBox="0 0 25 25"><path fill-rule="evenodd" d="M11.37 22.065c-3.284-.996-6.021-3.642-6.73-7.661-.725-4.111.935-7.54 3.697-9.58 2.74-2.023 6.543-2.668 10.119-1.349a1 1 0 0 1 .104 1.831l-.45-.893.45.893h.001l.002-.001-.003.001a7 7 0 0 0-.632.403c-.403.29-.93.731-1.427 1.33-.978 1.178-1.846 2.97-1.395 5.525.45 2.554 1.878 3.939 3.2 4.71.67.39 1.315.623 1.793.757a7 7 0 0 0 .73.161h.004-.003.003a1 1 0 0 1 .528 1.757c-2.918 2.47-6.726 3.105-9.99 2.116Zm7.018-2.52a10 10 0 0 1-1.09-.544c-1.72-1.003-3.59-2.842-4.162-6.09s.554-5.616 1.826-7.15c.282-.339.57-.637.848-.896-2.307-.308-4.568.3-6.285 1.568-2.178 1.609-3.503 4.292-2.915 7.624.568 3.224 2.725 5.3 5.34 6.094a8.65 8.65 0 0 0 6.438-.605Z" clip-rule="evenodd"></path></svg>`;
+const sunSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" viewBox="0 0 25 25"><path fill-rule="evenodd" d="M12.5 1a1 1 0 0 1 1 1v2a1 1 0 1 1-2 0V2a1 1 0 0 1 1-1m0 7a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9M6 12.5a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0m7.5 8.5a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0zm6.5-8.5a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2h-2a1 1 0 0 1-1-1m-18-1a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2zm1.793-7.707a1 1 0 0 1 1.414 0l1.5 1.5a1 1 0 0 1-1.414 1.414l-1.5-1.5a1 1 0 0 1 0-1.414M21.12 21.12a1 1 0 0 0 0-1.414l-1.414-1.414a1 1 0 0 0-1.414 1.414l1.414 1.414a1 1 0 0 0 1.414 0M18.293 6.707a1 1 0 0 1 0-1.414l1.414-1.414a1 1 0 1 1 1.414 1.414l-1.414 1.414a1 1 0 0 1-1.414 0m-14.5 13.086a1 1 0 1 0 1.414 1.414l1.5-1.5a1 1 0 1 0-1.414-1.414z" clip-rule="evenodd"></path></svg>`;
+
 const themeToggle = document.getElementById('themeToggle');
 const textarea = document.getElementById("textInput");
 const clearBtn = document.getElementById("clearButton");
@@ -224,22 +223,26 @@ const copyBtn = document.getElementById("copyButton");
 const textSpan = copyBtn.querySelector('.btn-text');
 const emojiSpan = copyBtn.querySelector('.btn-emoji');
 
-// Загрузка сохраненной темы при старте
+// Инициализация темы и иконки
 window.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
         document.body.classList.add('dark');
+        themeToggle.innerHTML = sunSVG;
     } else {
         document.body.classList.remove('dark');
+        themeToggle.innerHTML = moonSVG;
     }
 });
 
-// Переключение темы с сохранением в localStorage
+// Переключение темы
 themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('dark');
     if (document.body.classList.contains('dark')) {
+        themeToggle.innerHTML = sunSVG;
         localStorage.setItem('theme', 'dark');
     } else {
+        themeToggle.innerHTML = moonSVG;
         localStorage.setItem('theme', 'light');
     }
 });
