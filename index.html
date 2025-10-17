@@ -139,11 +139,12 @@ body.dark button.action-btn:hover:not(:disabled) { background-color: #7380e0; }
 
 .theme-toggle:hover svg { transform: scale(1.1); }
 
-/* подпись внизу слева */
+/* подпись внизу по центру */
 .footer-text {
     position: fixed;
     bottom: 10px;
-    left: 10px;
+    left: 50%;
+    transform: translateX(-50%);
     font-size: 14px;
     color: #333;
     transition: color 0.3s;
@@ -236,7 +237,6 @@ function copyText() {
     textarea.select();
     navigator.clipboard.writeText(textarea.value);
 
-    // fade переключение текста на эмодзи
     textSpan.style.opacity = '0';
     emojiSpan.style.opacity = '1';
 
