@@ -46,7 +46,7 @@ h1 {
 
 textarea {
     width: 100%;
-    height: 125px; /* уменьшено в два раза */
+    height: 125px;
     padding: 12px;
     border-radius: 8px;
     border: 1px solid #ccc;
@@ -224,8 +224,24 @@ const copyBtn = document.getElementById("copyButton");
 const textSpan = copyBtn.querySelector('.btn-text');
 const emojiSpan = copyBtn.querySelector('.btn-emoji');
 
+// Загрузка сохраненной темы при старте
+window.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark');
+    } else {
+        document.body.classList.remove('dark');
+    }
+});
+
+// Переключение темы с сохранением в localStorage
 themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('dark');
+    if (document.body.classList.contains('dark')) {
+        localStorage.setItem('theme', 'dark');
+    } else {
+        localStorage.setItem('theme', 'light');
+    }
 });
 
 // Автоочистка текста при вводе/вставке
