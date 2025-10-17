@@ -4,9 +4,13 @@
 <meta charset="UTF-8">
 <title>Очистка текста</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Подключаем шрифт Onest -->
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
 <style>
 body {
-    font-family: sans-serif;
+    font-family: 'Onest', sans-serif;
     background: #f7f7f7;
     color: #000;
     display: flex;
@@ -17,6 +21,10 @@ body {
     padding: 20px;
     box-sizing: border-box;
     transition: background 0.3s, color 0.3s;
+}
+
+*, *::before, *::after {
+    font-family: 'Onest', sans-serif !important;
 }
 
 .wrapper {
@@ -38,7 +46,7 @@ h1 {
 
 textarea {
     width: 100%;
-    height: 250px;
+    height: 125px; /* уменьшено в два раза */
     padding: 12px;
     border-radius: 8px;
     border: 1px solid #ccc;
@@ -84,39 +92,42 @@ textarea {
 }
 
 body:not(.dark) .clear-btn:hover { background-color: #d9d9d9; }
-body.dark .clear-btn:hover { background-color: #4a4d54; }
+body.dark .clear-btn:hover { background-color: #4a4aff; }
 
 /* Цвета для темной темы */
 body.dark .clear-btn { background-color: #36393f; }
 body.dark .clear-btn svg { fill: #d0d0d2; }
 
-/* кнопки действия */
-.buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-button.action-btn {
-    padding: 12px 20px;
+/* кнопка копирования */
+.copy-btn {
+    min-width: 135px;
+    height: 44px;
+    padding: 0 20px;
     border: none;
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
-    flex: 1;
     position: relative;
     overflow: hidden;
-    transition: background 0.3s;
+    transition: background 0.3s, opacity 0.3s;
+    margin: 15px auto 0;
+    opacity: 0;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-body:not(.dark) button.action-btn { background-color: #2e2ee5; color: white; }
-body:not(.dark) button.action-btn:disabled { background-color: #c1c1f7; cursor: not-allowed; }
-body:not(.dark) button.action-btn:hover:not(:disabled) { background-color: #4a4aff; }
+.copy-btn.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
 
-body.dark button.action-btn { background-color: #5869d3; color: white; }
-body.dark button.action-btn:disabled { background-color: #272e53; cursor: not-allowed; }
-body.dark button.action-btn:hover:not(:disabled) { background-color: #7380e0; }
+body:not(.dark) .copy-btn { background-color: #2e2ee5; color: white; }
+body:not(.dark) .copy-btn:hover { background-color: #4a4aff; }
+
+body.dark .copy-btn { background-color: #5869d3; color: white; }
+body.dark .copy-btn:hover { background-color: #7380e0; }
 
 /* кнопка переключения темы */
 .theme-toggle {
@@ -161,11 +172,9 @@ body.dark .footer-text { color: #d0d0d2; }
 body.dark .theme-toggle svg { color: #d0d0d2; }
 
 @media (max-width: 600px) {
-    body { align-items: flex-start; }
     .wrapper { max-width: 100%; }
-    textarea { height: 300px; font-size: 15px; }
-    .buttons { flex-direction: column; align-items: stretch; gap: 10px; }
-    button.action-btn { width: 100%; font-size: 15px; }
+    textarea { height: 150px; font-size: 15px; }
+    .copy-btn { width: 100%; font-size: 15px; }
     h1 { font-size: 1.4rem; }
 }
 
@@ -175,7 +184,7 @@ body.dark .theme-toggle svg { color: #d0d0d2; }
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    transition: opacity 0.3s;
+    transition: opacity 0.25s;
 }
 
 .btn-emoji { opacity: 0; }
@@ -199,15 +208,10 @@ body.dark .theme-toggle svg { color: #d0d0d2; }
             </svg>
         </button>
     </div>
-    <div class="buttons">
-        <button id="cleanButton" class="action-btn" onclick="cleanText();" disabled>
-            Удалить скрытые символы
-        </button>
-        <button id="copyButton" class="action-btn" style="display:none;" onclick="copyText()">
-            <span class="btn-text">Скопировать</span>
-            <span class="btn-emoji">❤️</span>
-        </button>
-    </div>
+    <button id="copyButton" class="copy-btn" onclick="copyText()">
+        <span class="btn-text">Скопировать</span>
+        <span class="btn-emoji">❤️</span>
+    </button>
 </div>
 
 <div class="footer-text">Сделал Дима, с ❤️ к Т—Ж</div>
@@ -216,21 +220,31 @@ body.dark .theme-toggle svg { color: #d0d0d2; }
 const themeToggle = document.getElementById('themeToggle');
 const textarea = document.getElementById("textInput");
 const clearBtn = document.getElementById("clearButton");
-const cleanBtn = document.getElementById("cleanButton");
 const copyBtn = document.getElementById("copyButton");
 const textSpan = copyBtn.querySelector('.btn-text');
 const emojiSpan = copyBtn.querySelector('.btn-emoji');
 
-let darkMode = false;
-
 themeToggle.addEventListener('click', () => {
-    darkMode = !darkMode;
-    document.body.classList.toggle('dark', darkMode);
+    document.body.classList.toggle('dark');
 });
 
-function cleanText() {
+// Автоочистка текста при вводе/вставке
+textarea.addEventListener("input", () => {
     textarea.value = textarea.value.replace(/\u00A0/g,' ').replace(/\u00AD/g,'');
-    copyBtn.style.display = "inline-block";
+
+    if (textarea.value.trim() === "") {
+        clearBtn.classList.remove("visible");
+        copyBtn.classList.remove("visible");
+    } else {
+        clearBtn.classList.add("visible");
+        copyBtn.classList.add("visible");
+    }
+});
+
+function clearField() {
+    textarea.value = '';
+    clearBtn.classList.remove("visible");
+    copyBtn.classList.remove("visible");
 }
 
 function copyText() {
@@ -243,26 +257,8 @@ function copyText() {
     setTimeout(() => {
         emojiSpan.style.opacity = '0';
         textSpan.style.opacity = '1';
-    }, 1500);
+    }, 500);
 }
-
-function clearField() {
-    textarea.value = '';
-    clearBtn.classList.remove("visible");
-    copyBtn.style.display = "none";
-    cleanBtn.disabled = true;
-}
-
-textarea.addEventListener("input", () => {
-    if (textarea.value.trim() === "") {
-        clearBtn.classList.remove("visible");
-        cleanBtn.disabled = true;
-        copyBtn.style.display = "none";
-    } else {
-        clearBtn.classList.add("visible");
-        cleanBtn.disabled = false;
-    }
-});
 </script>
 
 </body>
