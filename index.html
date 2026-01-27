@@ -1,285 +1,360 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-<meta charset="UTF-8">
-<title>Очистка текста</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Очистка текста</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Подключаем шрифт Onest -->
-<link href="https://fonts.googleapis.com/css2?family=Onest:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Подключаем шрифт Onest -->
+    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 
-<style>
-body {
-    font-family: 'Onest', sans-serif;
-    background: #f7f7f7;
-    color: #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px;
-    box-sizing: border-box;
-    transition: background 0.3s, color 0.3s;
-}
+    <style>
+        body {
+            font-family: 'Onest', sans-serif;
+            background: #f7f7f7;
+            color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            transition: background 0.3s, color 0.3s;
+        }
 
-*, *::before, *::after {
-    font-family: 'Onest', sans-serif !important;
-}
+        *,
+        *::before,
+        *::after {
+            font-family: 'Onest', sans-serif !important;
+        }
 
-.wrapper {
-    max-width: 600px;
-    width: 100%;
-    text-align: center;
-    position: relative;
-}
+        .wrapper {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
 
-h1 {
-    margin-bottom: 20px;
-    font-size: 1.6rem;
-}
+        h1 {
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+        }
 
-.textarea-wrapper {
-    position: relative;
-    width: 100%;
-}
+        .textarea-wrapper {
+            position: relative;
+            width: 100%;
+        }
 
-textarea {
-    width: 100%;
-    height: 125px;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    resize: none;
-    font-size: 16px;
-    box-sizing: border-box;
-    outline: none;
-    background: white;
-    color: #000;
-    transition: background 0.3s, color 0.3s, border-color 0.3s;
-}
+        textarea {
+            width: 100%;
+            height: 125px;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            resize: none;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+            background: white;
+            color: #000;
+            transition: background 0.3s, color 0.3s, border-color 0.3s;
+        }
 
-/* Кнопка крестика */
-.clear-btn {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 2;
-    background-color: #eaeaea;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease-in-out, background 0.3s;
-}
+        /* Кнопка крестика */
+        .clear-btn {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            background-color: #eaeaea;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease-in-out, background 0.3s;
+        }
 
-.clear-btn.visible {
-    opacity: 1;
-    pointer-events: auto;
-}
+        .clear-btn.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
 
-.clear-btn svg {
-    width: 16px;
-    height: 16px;
-    fill: #333;
-    transition: fill 0.3s;
-}
+        .clear-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: #333;
+            transition: fill 0.3s;
+        }
 
-body:not(.dark) .clear-btn:hover { background-color: #d9d9d9; }
-body.dark .clear-btn:hover { background-color: #4a4a50; }
+        body:not(.dark) .clear-btn:hover {
+            background-color: #d9d9d9;
+        }
+
+        body.dark .clear-btn:hover {
+            background-color: #4a4a50;
+        }
 
 
-/* Цвета для темной темы */
-body.dark .clear-btn { background-color: #36393f; }
-body.dark .clear-btn svg { fill: #d0d0d2; }
+        /* Цвета для темной темы */
+        body.dark .clear-btn {
+            background-color: #36393f;
+        }
 
-/* кнопка копирования */
-.copy-btn {
-    min-width: 135px;
-    height: 44px;
-    padding: 0 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: background 0.3s, opacity 0.3s;
-    margin: 15px auto 0;
-    opacity: 0;
-    pointer-events: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        body.dark .clear-btn svg {
+            fill: #d0d0d2;
+        }
 
-.copy-btn.visible {
-    opacity: 1;
-    pointer-events: auto;
-}
+        /* кнопка копирования */
+        .copy-btn {
+            min-width: 135px;
+            height: 44px;
+            padding: 0 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.3s, opacity 0.3s;
+            margin: 15px auto 0;
+            opacity: 0;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-body:not(.dark) .copy-btn { background-color: #2e2ee5; color: white; }
-body:not(.dark) .copy-btn:hover { background-color: #4a4aff; }
+        .copy-btn.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
 
-body.dark .copy-btn { background-color: #5869d3; color: white; }
-body.dark .copy-btn:hover { background-color: #7380e0; }
+        body:not(.dark) .copy-btn {
+            background-color: #2e2ee5;
+            color: white;
+        }
 
-/* кнопка переключения темы */
-.theme-toggle {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-}
+        body:not(.dark) .copy-btn:hover {
+            background-color: #4a4aff;
+        }
 
-.theme-toggle svg {
-    width: 30px;
-    height: 30px;
-    fill: currentColor;
-    transition: transform 0.2s, color 0.3s;
-}
+        body.dark .copy-btn {
+            background-color: #5869d3;
+            color: white;
+        }
 
-.theme-toggle:hover svg { transform: scale(1.1); }
+        body.dark .copy-btn:hover {
+            background-color: #7380e0;
+        }
 
-/* подпись внизу по центру */
-.footer-text {
-    position: fixed;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 14px;
-    color: #333;
-    transition: color 0.3s;
-}
+        /* кнопка переключения темы */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
 
-/* тёмная тема */
-body.dark {
-    background: #12151c;
-    color: #f0f0f0;
-}
+        .theme-toggle svg {
+            width: 30px;
+            height: 30px;
+            fill: currentColor;
+            transition: transform 0.2s, color 0.3s;
+        }
 
-body.dark textarea { background: #12151c; color: #fff; border-color: #52545a; }
-body.dark .footer-text { color: #d0d0d2; }
-body.dark .theme-toggle svg { color: #d0d0d2; }
+        .theme-toggle:hover svg {
+            transform: scale(1.1);
+        }
 
-@media (max-width: 600px) {
-    .wrapper { max-width: 100%; }
-    textarea { height: 150px; font-size: 15px; }
-    .copy-btn { width: 100%; font-size: 15px; }
-    h1 { font-size: 1.4rem; }
-}
+        /* подпись внизу по центру */
+        .footer-text {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            color: #333;
+            transition: color 0.3s;
+        }
 
-/* Эмодзи ❤️ и текст кнопки с fade */
-.btn-emoji, .btn-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    transition: opacity 0.25s;
-}
+        /* тёмная тема */
+        body.dark {
+            background: #12151c;
+            color: #f0f0f0;
+        }
 
-.btn-emoji { opacity: 0; }
-</style>
+        body.dark textarea {
+            background: #12151c;
+            color: #fff;
+            border-color: #52545a;
+        }
+
+        body.dark .footer-text {
+            color: #d0d0d2;
+        }
+
+        body.dark .theme-toggle svg {
+            color: #d0d0d2;
+        }
+
+        @media (max-width: 600px) {
+            .wrapper {
+                max-width: 100%;
+            }
+
+            textarea {
+                height: 150px;
+                font-size: 15px;
+            }
+
+            .copy-btn {
+                width: 100%;
+                font-size: 15px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+        }
+
+        /* Эмодзи ❤️ и текст кнопки с fade */
+        .btn-emoji,
+        .btn-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.25s;
+        }
+
+        .btn-emoji {
+            opacity: 0;
+        }
+    </style>
 </head>
+
 <body>
 
-<button id="themeToggle" class="theme-toggle" title="Переключить тему"></button>
+    <button id="themeToggle" class="theme-toggle" title="Переключить тему"></button>
 
-<div class="wrapper">
-    <h1>Очистка текста от скрытых символов</h1>
-    <div class="textarea-wrapper">
-        <textarea id="textInput" placeholder="Вставьте текст сюда..."></textarea>
-        <button id="clearButton" class="clear-btn" onclick="clearField()" title="Очистить поле">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="5 5 15 15" fill="currentColor">
-                <path fill-rule="evenodd" d="M5.293 5.293a1 1 0 0 1 1.414 0l5.793 5.792 5.793-5.792a1 1 0 1 1 1.414 1.414L13.914 12.5l5.793 5.793a1 1 0 0 1-1.414 1.414L12.5 13.914l-5.793 5.793a1 1 0 0 1-1.414-1.414l5.793-5.793-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"></path>
-            </svg>
+    <div class="wrapper">
+        <h1>Очистка текста от скрытых символов</h1>
+        <div class="textarea-wrapper">
+            <textarea id="textInput" placeholder="Вставьте текст сюда..."></textarea>
+            <button id="clearButton" class="clear-btn" onclick="clearField()" title="Очистить поле">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="5 5 15 15" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M5.293 5.293a1 1 0 0 1 1.414 0l5.793 5.792 5.793-5.792a1 1 0 1 1 1.414 1.414L13.914 12.5l5.793 5.793a1 1 0 0 1-1.414 1.414L12.5 13.914l-5.793 5.793a1 1 0 0 1-1.414-1.414l5.793-5.793-5.793-5.793a1 1 0 0 1 0-1.414"
+                        clip-rule="evenodd"></path>
+                </svg>
+            </button>
+        </div>
+        <button id="copyButton" class="copy-btn" onclick="copyText()">
+            <span class="btn-text">Скопировать</span>
+            <span class="btn-emoji">❤️</span>
         </button>
     </div>
-    <button id="copyButton" class="copy-btn" onclick="copyText()">
-        <span class="btn-text">Скопировать</span>
-        <span class="btn-emoji">❤️</span>
-    </button>
-</div>
 
-<div class="footer-text">Сделал Дима, с ❤️ к Т—Ж</div>
+    <div class="footer-text">Сделал Дима, с ❤️ к Т—Ж</div>
 
-<script>
-const moonSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" viewBox="0 0 25 25"><path fill-rule="evenodd" d="M11.37 22.065c-3.284-.996-6.021-3.642-6.73-7.661-.725-4.111.935-7.54 3.697-9.58 2.74-2.023 6.543-2.668 10.119-1.349a1 1 0 0 1 .104 1.831l-.45-.893.45.893h.001l.002-.001-.003.001a7 7 0 0 0-.632.403c-.403.29-.93.731-1.427 1.33-.978 1.178-1.846 2.97-1.395 5.525.45 2.554 1.878 3.939 3.2 4.71.67.39 1.315.623 1.793.757a7 7 0 0 0 .73.161h.004-.003.003a1 1 0 0 1 .528 1.757c-2.918 2.47-6.726 3.105-9.99 2.116Zm7.018-2.52a10 10 0 0 1-1.09-.544c-1.72-1.003-3.59-2.842-4.162-6.09s.554-5.616 1.826-7.15c.282-.339.57-.637.848-.896-2.307-.308-4.568.3-6.285 1.568-2.178 1.609-3.503 4.292-2.915 7.624.568 3.224 2.725 5.3 5.34 6.094a8.65 8.65 0 0 0 6.438-.605Z" clip-rule="evenodd"></path></svg>`;
-const sunSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" viewBox="0 0 25 25"><path fill-rule="evenodd" d="M12.5 1a1 1 0 0 1 1 1v2a1 1 0 1 1-2 0V2a1 1 0 0 1 1-1m0 7a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9M6 12.5a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0m7.5 8.5a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0zm6.5-8.5a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2h-2a1 1 0 0 1-1-1m-18-1a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2zm1.793-7.707a1 1 0 0 1 1.414 0l1.5 1.5a1 1 0 0 1-1.414 1.414l-1.5-1.5a1 1 0 0 1 0-1.414M21.12 21.12a1 1 0 0 0 0-1.414l-1.414-1.414a1 1 0 0 0-1.414 1.414l1.414 1.414a1 1 0 0 0 1.414 0M18.293 6.707a1 1 0 0 1 0-1.414l1.414-1.414a1 1 0 1 1 1.414 1.414l-1.414 1.414a1 1 0 0 1-1.414 0m-14.5 13.086a1 1 0 1 0 1.414 1.414l1.5-1.5a1 1 0 1 0-1.414-1.414z" clip-rule="evenodd"></path></svg>`;
+    <script>
+        const moonSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" viewBox="0 0 25 25"><path fill-rule="evenodd" d="M11.37 22.065c-3.284-.996-6.021-3.642-6.73-7.661-.725-4.111.935-7.54 3.697-9.58 2.74-2.023 6.543-2.668 10.119-1.349a1 1 0 0 1 .104 1.831l-.45-.893.45.893h.001l.002-.001-.003.001a7 7 0 0 0-.632.403c-.403.29-.93.731-1.427 1.33-.978 1.178-1.846 2.97-1.395 5.525.45 2.554 1.878 3.939 3.2 4.71.67.39 1.315.623 1.793.757a7 7 0 0 0 .73.161h.004-.003.003a1 1 0 0 1 .528 1.757c-2.918 2.47-6.726 3.105-9.99 2.116Zm7.018-2.52a10 10 0 0 1-1.09-.544c-1.72-1.003-3.59-2.842-4.162-6.09s.554-5.616 1.826-7.15c.282-.339.57-.637.848-.896-2.307-.308-4.568.3-6.285 1.568-2.178 1.609-3.503 4.292-2.915 7.624.568 3.224 2.725 5.3 5.34 6.094a8.65 8.65 0 0 0 6.438-.605Z" clip-rule="evenodd"></path></svg>`;
+        const sunSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" viewBox="0 0 25 25"><path fill-rule="evenodd" d="M12.5 1a1 1 0 0 1 1 1v2a1 1 0 1 1-2 0V2a1 1 0 0 1 1-1m0 7a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9M6 12.5a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0m7.5 8.5a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0zm6.5-8.5a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2h-2a1 1 0 0 1-1-1m-18-1a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2zm1.793-7.707a1 1 0 0 1 1.414 0l1.5 1.5a1 1 0 0 1-1.414 1.414l-1.5-1.5a1 1 0 0 1 0-1.414M21.12 21.12a1 1 0 0 0 0-1.414l-1.414-1.414a1 1 0 0 0-1.414 1.414l1.414 1.414a1 1 0 0 0 1.414 0M18.293 6.707a1 1 0 0 1 0-1.414l1.414-1.414a1 1 0 1 1 1.414 1.414l-1.414 1.414a1 1 0 0 1-1.414 0m-14.5 13.086a1 1 0 1 0 1.414 1.414l1.5-1.5a1 1 0 1 0-1.414-1.414z" clip-rule="evenodd"></path></svg>`;
 
-const themeToggle = document.getElementById('themeToggle');
-const textarea = document.getElementById("textInput");
-const clearBtn = document.getElementById("clearButton");
-const copyBtn = document.getElementById("copyButton");
-const textSpan = copyBtn.querySelector('.btn-text');
-const emojiSpan = copyBtn.querySelector('.btn-emoji');
+        const themeToggle = document.getElementById('themeToggle');
+        const textarea = document.getElementById("textInput");
+        const clearBtn = document.getElementById("clearButton");
+        const copyBtn = document.getElementById("copyButton");
+        const textSpan = copyBtn.querySelector('.btn-text');
+        const emojiSpan = copyBtn.querySelector('.btn-emoji');
 
-// Инициализация темы и иконки
-window.addEventListener('DOMContentLoaded', () => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark');
-        themeToggle.innerHTML = sunSVG;
-    } else {
-        document.body.classList.remove('dark');
-        themeToggle.innerHTML = moonSVG;
-    }
-});
+        // Инициализация темы и иконки
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark');
+                themeToggle.innerHTML = sunSVG;
+            } else {
+                document.body.classList.remove('dark');
+                themeToggle.innerHTML = moonSVG;
+            }
+        });
 
-// Переключение темы
-themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark');
-    if (document.body.classList.contains('dark')) {
-        themeToggle.innerHTML = sunSVG;
-        localStorage.setItem('theme', 'dark');
-    } else {
-        themeToggle.innerHTML = moonSVG;
-        localStorage.setItem('theme', 'light');
-    }
-});
+        // Переключение темы
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            if (document.body.classList.contains('dark')) {
+                themeToggle.innerHTML = sunSVG;
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggle.innerHTML = moonSVG;
+                localStorage.setItem('theme', 'light');
+            }
+        });
 
-// Автоочистка текста при вводе/вставке
-textarea.addEventListener("input", () => {
-    textarea.value = textarea.value.replace(/\u00A0/g,' ').replace(/\u00AD/g,'');
+        // Автоочистка текста при вводе/вставке
+        textarea.addEventListener("input", () => {
+            // 1. Меняем неразрывный пробел на обычный
+            textarea.value = textarea.value.replace(/\u00A0/g, ' ');
 
-    if (textarea.value.trim() === "") {
-        clearBtn.classList.remove("visible");
-        copyBtn.classList.remove("visible");
-    } else {
-        clearBtn.classList.add("visible");
-        copyBtn.classList.add("visible");
-    }
-});
+            // 2. Список символов
+            // \u00AD - мягкий перенос
+            // \u2063 - невидимый разделитель (тот, что был у тебя в цене)
+            // \u200B - пробел нулевой ширины
+            // \u200C - ZWNJ (невидимый разделитель)
+            // \u200D - ZWJ (невидимый соединитель)
+            // \u200E - LTR (слева-направо)
+            // \u200F - RTL (справа-налево)
+            // \u2060 - Word Joiner
+            // \uFEFF - BOM (маркер начала файла)
+            // \u2028 - разделитель строк
+            // \u2029 - разделитель абзацев
+            const hiddenCharsRegex = /[\u00AD\u2063\u200B\u200C\u200D\u200E\u200F\u2060\uFEFF\u2028\u2029]/g;
+            textarea.value = textarea.value.replace(hiddenCharsRegex, '');
 
-function clearField() {
-    textarea.value = '';
-    clearBtn.classList.remove("visible");
-    copyBtn.classList.remove("visible");
-}
 
-function copyText() {
-    textarea.select();
-    navigator.clipboard.writeText(textarea.value);
+            if (textarea.value.trim() === "") {
+                clearBtn.classList.remove("visible");
+                copyBtn.classList.remove("visible");
+            } else {
+                clearBtn.classList.add("visible");
+                copyBtn.classList.add("visible");
+            }
+        });
 
-    textSpan.style.opacity = '0';
-    emojiSpan.style.opacity = '1';
+        function clearField() {
+            textarea.value = '';
+            clearBtn.classList.remove("visible");
+            copyBtn.classList.remove("visible");
+        }
 
-    setTimeout(() => {
-        emojiSpan.style.opacity = '0';
-        textSpan.style.opacity = '1';
-    }, 500);
-}
-</script>
+        function copyText() {
+            textarea.select();
+            navigator.clipboard.writeText(textarea.value);
+
+            textSpan.style.opacity = '0';
+            emojiSpan.style.opacity = '1';
+
+            setTimeout(() => {
+                emojiSpan.style.opacity = '0';
+                textSpan.style.opacity = '1';
+            }, 500);
+        }
+    </script>
 
 </body>
+
 </html>
